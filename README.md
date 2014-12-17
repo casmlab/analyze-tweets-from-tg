@@ -42,7 +42,7 @@ settings.cfg).
 - tweets.json
 - tweets_by_day.json
 
-Examples of the JSON files are in [/examples](examples).
+The names of these files depend on the name of the MySQL table from which you grab data. Examples of the JSON files are in [/examples](examples).
 
 ```tweets_analysis.py``` produces 3 TXT files and 2 PNG files:
 - lexical_diversity.txt - a table of lexical diversity scores by day
