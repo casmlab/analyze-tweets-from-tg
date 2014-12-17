@@ -1,6 +1,8 @@
-# files scripts produce
+# files scripts produce/use
 /*.json
 /*.txt
+settings.cfg
+/*.pdf
 
 # OS X
 .DS_Store

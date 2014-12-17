@@ -17,13 +17,13 @@ import re
 import sys
 
 # import functions from setup file
-import gamergate_setup as ggs
+import tweets_setup as ts
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
 # start logging
-ggs.start_log()
+ts.start_log()
 logging.info('STARTING ANALYSIS')
 
 # HELPERS
@@ -181,7 +181,7 @@ def main():
     logging.info("Starting main function...")
     try:
         logging.info("Getting config values...")
-        _, mysql_table, key_terms, key_users = ggs.get_config()
+        _, mysql_table, key_terms, key_users = ts.get_config()
     except:
         logging.error("Couldn't get config values. Exiting.")
         sys.exit(0)
