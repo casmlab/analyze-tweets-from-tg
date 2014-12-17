@@ -10,11 +10,14 @@ on language and language use trends.
 You need to add a new column to the `tweets` table in your
 MySQL database and set its values.
 
-``` ALTER TABLE `tweets` ADD `day` DATE AFTER `created_at`;``` 
+``` ALTER TABLE `tweets` ADD `day` DATE AFTER `created_at`;```
+
 ``` UPDATE `tweets` SET `day` = DATE(`created_at`);```
 
 Note: you can use `created_at` if you don't have much data, but getting `day`
-is much faster for <1M rows.
+is much faster for >1M rows.
+
+OPTIONAL: Set your ```ANALYZE_TWEETS_LOG_FILE``` environment variable. Default is 'analyze_tweets.log'.
 
 ## How does this work?
 
@@ -29,7 +32,8 @@ up getting data since MySQL is a bottleneck.
 Set your variables in the config file (copy settings_example.cfg to
 settings.cfg).
 
-```python tweets_setup.py``` 
+```python tweets_setup.py```
+
 ```python tweets_analysis.py```
 
 ## Output
@@ -38,7 +42,7 @@ settings.cfg).
 - tweets.json
 - tweets_by_day.json
 
-Examples of the JSON files are in /examples.
+Examples of the JSON files are in [/examples](examples).
 
 ```tweets_analysis.py``` produces 3 TXT files and 2 PNG files:
 - lexical_diversity.txt - a table of lexical diversity scores by day
