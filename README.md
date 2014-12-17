@@ -29,7 +29,7 @@ up getting data since MySQL is a bottleneck.
 
 ## Usage 
 
-Set your variables in the config file (copy settings_example.cfg to
+Set your variables in the config file (copy [settings_example.cfg](settings_example.cfg) to
 settings.cfg).
 
 ```python tweets_setup.py```
