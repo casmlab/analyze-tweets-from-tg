@@ -58,7 +58,7 @@ def get_config():
 # default data is a dictionary with keys id, day, text 
 # optional: specify a user to limit tweets
 # dumps MySQL data to a JSON file
-def make_tweets_json(conn, user="All", table="tweets"):
+def make_tweets_json(conn, user="All", table="tweet"):
     logging.info("Getting tweets...") 
     
     # build the query
