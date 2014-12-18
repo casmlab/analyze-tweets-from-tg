@@ -63,9 +63,9 @@ def make_tweets_json(conn, user="All", table="tweet"):
     
     # build the query
     if user == "All":
-        query = "SELECT `tweet_id_str` as `id`, `day`, `text` FROM %s " % table
+        query = "SELECT `tweet_id_str` as `tweet_id`, `day`, `text`, `from_user` as `user_id`, `from_user_name` as `user_name` FROM %s " % table
     else:
-        query = 'SELECT `tweet_id_str` as `id`, `day`, `text` FROM %s WHERE lower(`from_user_name`) = \'%s\'' % (table, user)
+        query = 'SELECT `tweet_id_str` as `id`, `day`, `text`, `from_user` FROM %s WHERE lower(`from_user_name`) = \'%s\'' % (table, user)
         
     # connect to database and get the data as a dictionary
     cursor = conn.cursor(dictionary=True)
@@ -87,38 +87,46 @@ def make_tweets_json(conn, user="All", table="tweet"):
     
     return tweet_dict
     
-# create a dictionary of day:text where text is a concatenation of all tweets from that day
+# create a dictionary of day:text or user:text where text is a concatenation of all tweets from that day/user
 # dump it to json
-def tweets_by_day(table):
-    logging.info("Creating list of day:text dictionaries...") 
+def pivot_tweets(table, pivot_field):
+    logging.info("Creating list of %s:text dictionaries..." % pivot_field) 
     json_data = table + ".json"
     json_data = open(json_data, 'r')
-    
-    # tweets aren't sorted by day, so do that first
+        
+    if pivot_field == 'day':
+        current = '2014-10-17'
+    elif pivot_field in ('user_id', 'user_name'):
+        current = ''
+    else:
+        logging.error("Unrecognized pivot type: %s" % pivot_field)
+        return
+        
+    # tweets aren't sorted, so do that first
 
     tweets = json.load(json_data)
-    tweets = sorted(tweets,key=lambda x:x['day'])
+    tweets = sorted(tweets,key=lambda x:x[pivot_field])
         
-    curr_day = '2014-10-17'
-    tweets_by_day = {}
-    days_tweets = ''
+    # loop through the sorted tweets and make day/user:text entries
+    pivoted_tweets = {}
+    current_tweets = ''
     for tweet in tweets:
-        # if we're still working on the same day as the last tweet
+        # if we're still working on the same day/user as the last tweet
         # should rewrite to use isoformat dates instead of str
-        if curr_day == str(tweet['day']):
-            days_tweets += " " + tweet['text']
-        else: # if we've finished tweets for that day, move on to the next one
-            # first, write the dictionary entry for the day that's done
-            tweets_by_day[curr_day] = days_tweets
-            curr_day = str(tweet['day'])
-            days_tweets = tweet['text']
-        # when we're done looping, write the entry for the last day
-        tweets_by_day[curr_day] = days_tweets
-    output_file = table + "_by_day.json"
+        if current == tweet[pivot_field]:
+            current_tweets += " " + tweet['text']
+        else: # if we've finished tweets for that day/user, move on to the next one
+            # first, write the entry for the day/user that's done
+            pivoted_tweets[current] = current_tweets
+            current = tweet[pivot_field]
+            current_tweets = tweet['text']
+        # when we're done looping, write the entry for the last day/user
+        pivoted_tweets[current] = current_tweets
+    output_file = table + "_by_" + pivot_field + ".json"
     with open(output_file, 'w') as f: 
-        json.dump(tweets_by_day, f)
+        json.dump(pivoted_tweets, f)
     logging.info("Dumped data to %s." % output_file) 
-    
+        
 # MAIN
 def main():
     logging.info("Getting started with main function...")
@@ -136,7 +144,9 @@ def main():
 
         # get the data into forms we can work with
         all_tweets = make_tweets_json(conn, table=mysql_table)
-        tweets_by_day(mysql_table)
+        pivot_tweets(mysql_table, 'day')
+        # pivot_tweets(mysql_table, 'user_id')
+        pivot_tweets(mysql_table, 'user_name')
 
     except sql.Error as err :
         logging.error(err)
