@@ -23,7 +23,6 @@ def start_log():
     logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     
 start_log()
-logging.info('STARTING SETUP')
 
 # from http://stackoverflow.com/questions/11875770/how-to-overcome-datetime-datetime-not-json-serializable-in-python
 def date_handler(obj):
@@ -121,7 +120,7 @@ def tweets_by_day(table):
     
 # MAIN
 def main():
-    logging.info("Getting started with main function...")
+    logging.info("Getting started with main SETUP function...")
     try:
         logging.info("Getting config values...")
         db_params, mysql_table, key_terms, key_users = get_config()
@@ -144,7 +143,7 @@ def main():
     else:
         logging.info("Closing connection and cleaning up.")
         conn.close()
-        logging.info("DONE.")
+        logging.info("DONE SETTING UP.")
 
 # Call the main function
 if __name__ == '__main__' :
