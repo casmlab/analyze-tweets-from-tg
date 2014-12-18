@@ -178,7 +178,7 @@ def print_freq(freq_dic):
 ## MEASURES OF CENTRALITY
 
 def main():
-    logging.info("Starting main function...")
+    logging.info("Starting main ANALYSIS function...")
     try:
         logging.info("Getting config values...")
         _, mysql_table, key_terms, key_users = ts.get_config()
@@ -224,7 +224,7 @@ def main():
         # NOTE: functions below are broken or aren't used for some other reason
         # disp_plot(days, key_terms)
         
-        logging.info("DONE.")
+        logging.info("DONE WITH ANALYSIS.")
     except IOError as e:
         logging.error("I/O error({0}): {1}".format(e.errno, e.strerror))
     except:
