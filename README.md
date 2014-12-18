@@ -48,3 +48,6 @@ The names of these files depend on the name of the MySQL table from which you gr
 - lexical_diversity.txt - a table of lexical diversity scores by day
 - word_count.txt - counts of words and unique words
 - word_freq.txt - a comma-delimited file with words and frequencies
+
+## Some notes on timing
+Using a database with ~3.2M tweets, setup took a few hours to run (I'll get detailed timing soon.) Analysis took roughly 2 hours.
