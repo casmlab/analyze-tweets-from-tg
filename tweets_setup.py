@@ -49,8 +49,9 @@ def get_config():
     mysql_table = config.get("MySQL","table")
     key_terms = ast.literal_eval(config.get("Terms", "key_terms"))
     key_users = ast.literal_eval(config.get("Terms", "key_users"))
+    hedges = ast.literal_eval(config.get("Terms", "hedges"))
     
-    return db_params, mysql_table, key_terms, key_users
+    return db_params, mysql_table, key_terms, key_users, hedges
 
 # DATA GETTING/FORMATTING
 
@@ -131,7 +132,7 @@ def main():
     logging.info("Getting started with main SETUP function...")
     try:
         logging.info("Getting config values...")
-        db_params, mysql_table, key_terms, key_users = get_config()
+        db_params, mysql_table, key_terms, key_users, hedges = get_config()
     except:
         logging.error("Couldn't get config values. Exiting.")
         sys.exit(0)

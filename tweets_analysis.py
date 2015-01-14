@@ -181,7 +181,7 @@ def main():
     logging.info("Starting main ANALYSIS function...")
     try:
         logging.info("Getting config values...")
-        _, mysql_table, key_terms, key_users = ts.get_config()
+        _, mysql_table, key_terms, key_users, hedges = ts.get_config()
     except:
         logging.error("Couldn't get config values. Exiting.")
         sys.exit(0)
